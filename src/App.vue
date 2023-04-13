@@ -1,19 +1,28 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <h1>{{ contactS }}</h1>
+  <h1>Hola</h1>
 </template>
 
-<script setup>
-import HelloWorld from './components/HelloWorld.vue';
+<script>
+import contacts from "./contacts.json";
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      contactS: contacts
+    }
+  },
+
+  methods: {
+    _firstFiveContact() {
+      this.contactS = this.contacts
+    }
+  }
+}
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
