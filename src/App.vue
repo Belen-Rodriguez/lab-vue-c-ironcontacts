@@ -1,5 +1,5 @@
 <template>
-<h1>{{ contacts }}</h1>
+<!-- <h1>{{ contacts }}</h1> -->
 
   <table>
     <tr>
@@ -12,16 +12,22 @@
       <th>Won Oscar</th>
       <th>Won Emmy</th>
     </tr>
-    <tr v-for="contact in contacts">
+    <tr v-for="contact in contacts"
+      :key="contact.id">
       <td><img class="smallPicture" :src="contact.pictureUrl" /></td>
       <td>{{ contact.name }}</td>
       <td>{{ contact.popularity }}</td>
       <td v-if="contact.wonOscar">🏆</td>
       <td v-else>    </td>
       <td v-if="contact.wonEmmy">🏆</td>
+      <td v-else>    </td>
+      <td><button @click="_deleteContact(contact)">Delete</button> </td>
     </tr>
   </table>
   <button @click="_addRandomContact">Add Contact</button>
+  <button @click="_sortName">Sort by Name</button>
+  <button @click="_sortPopularity">Sort by Popularity</button>
+  
 </template>
 
 <script>
@@ -41,8 +47,8 @@ export default {
   created() {
    this._firstFiveContact();
     console.log(this.dataContact);
-    console.log(this.unShowedContact);
-    console.log(this.showContact);
+   // console.log(this.unShowedContact);
+   // console.log(this.showContact);
 
   },
   methods: {
@@ -57,15 +63,47 @@ export default {
     },
 
     _addRandomContact() {
-      //const randomContact = Math.floor(Math.random())
-     this.contacts.push(this.contactsNotShowed[0]);
-     this.contactsNotShowed.shift()
+     const randomContact = Math.floor(Math.random() * this.contactsNotShowed.length)
+     this.contacts.push(this.contactsNotShowed[randomContact]);
+     this.contactsNotShowed.splice(randomContact,1)
 
+     console.log(randomContact)
      console.log(this.contacts);
      console.log(this.contactsNotShowed);
+    },
+    _sortName(){
+      this.contacts.sort(function (a,b){
+        if(a.name < b.name){
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0
+      })
+    },
+    _sortPopularity(){
+      this.contacts.sort(function (a,b){
+        if(a.popularity < b.popularity){
+          return 1;
+        }
+        if (a.popularity > b.popularity) {
+          return -1;
+        }
+        return 0
+      })
+      console.log(this.contacts)
+    },
+    _deleteContact(contactDelete) {
+      const contactIdSelected = contactDelete.id
+      const indexOfContact = this.contacts.indexOf(contactDelete)
+      this.contacts.splice(indexOfContact,1)
+      this.contactsNotShowed.push(contactDelete)
 
+      console.log(contactDelete.id)
+      console.log(indexOfContact)
+      console.log(this.contactsNotShowed)
     }
-
   },
   computed: {
     /*showContact(){
